@@ -12,11 +12,18 @@ describe 'Collecting KPIs' do
 
     @driver.navigate.to $url
     presentation = Presentation.new(@driver)
+
+    slides = get_slides
+    slides_number = slides.length
+
+    test_data = generate_test_data slides_number
+    enumerator = test_data.each
     loop do
-      # wait and record time
-      presentation.turn_slide forward
-      break if presentation.is_last_slide?
+      time, attitude = enumerator.next.values_at(:time, :attitude)
+      sleep time
+      presentation.turn_slide :forward, attitude
     end
+
     actual_kpi = presentation.get_kpi
     expect(actual_kpi).to equal(expected_kpi)
   end

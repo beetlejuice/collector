@@ -37,10 +37,6 @@ class Presentation
     JSON.parse(raw_kpi)
   end
 
-  def is_last_slide?
-
-  end
-
   private
 
   def ensure_is_current_frame
