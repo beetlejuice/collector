@@ -1,0 +1,2 @@
+class ProductPresentation < Presentation
+end
