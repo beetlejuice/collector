@@ -1,4 +1,6 @@
 module PresentationHelper
+  require 'json'
+
   def setup
     @driver.manage.window.resize_to(1044, 898)
   end
@@ -14,11 +16,13 @@ module PresentationHelper
   	test_data
   end
 
-  def get_slide_names
-
+  def get_slides
+    STRUCTURE_FILEPATH = 'structure_cn0.json'
+    structure = JSON.parse(File.read(STRUCTURE_FILEPATH))
+    slides = structure["slides"]
   end
 
-  def expected_kpi
-
+  def prepare_reference_kpi
+    []
   end
 end

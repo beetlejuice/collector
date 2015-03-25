@@ -25,6 +25,7 @@ describe 'Collecting KPIs' do
     end
 
     actual_kpi = presentation.get_kpi
-    expect(actual_kpi).to equal(expected_kpi)
+    reference_kpi = prepare_reference_kpi
+    expect(actual_kpi).to equal(reference_kpi)
   end
 end
