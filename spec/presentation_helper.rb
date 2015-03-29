@@ -5,14 +5,17 @@ module PresentationHelper
     @driver.manage.window.resize_to(1044, 898)
   end
 
-  def generate_test_data size
+  def generate_test_data slides
   	MIN_TIME = 1
   	MAX_TIME = 10
   	test_data = []
-  	size.times test_data << {
-  		time: rand(MIN_TIME..MAX_TIME),
-  		attitude: %i(positive, negative).sample
-  	}
+  	slides.each do |slide_name| 
+      test_data << {
+        slide: slide_name
+  		  time: rand(MIN_TIME..MAX_TIME),
+  		  attitude: %i(positive, negative).sample # here attitude is picked by random
+  	  }
+    end
   	test_data
   end
 

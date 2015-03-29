@@ -10,13 +10,12 @@ describe 'Collecting KPIs' do
     # Get KPI
     # Check for equalness (generate reference string before?)
 
+    slides = get_slides
+    test_data = generate_test_data slides
+
     @driver.navigate.to $url
     presentation = Presentation.new(@driver)
 
-    slides = get_slides
-    slides_number = slides.length
-
-    test_data = generate_test_data slides_number
     enumerator = test_data.each
     loop do
       time, attitude = enumerator.next.values_at(:time, :attitude)
