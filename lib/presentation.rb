@@ -2,8 +2,15 @@ class Presentation
 
   require 'json'
 
-  def initialize driver
+  attr_accessor :driver, :url
+
+  def initialize driver, url
     @driver = driver
+    @url = url
+  end
+
+  def start
+    @driver.navigate.to @url
   end
 
   def turn_slide direction, attitude = nil
@@ -13,8 +20,8 @@ class Presentation
 
     start_x, offset_x = 
       case direction
-      when :forward then 3*body.size.width/4, -body.size.width/2
-      when :backward then body.size.width/4, body.size.width/2
+      when :forward then [3*body.size.width/4, -body.size.width/2]
+      when :backward then [body.size.width/4, body.size.width/2]
       else raise 'Wrong direction of turning slide!'
       end
 
@@ -32,9 +39,22 @@ class Presentation
                    perform
   end
 
-  def get_kpi
-    raw_kpi = @driver.execute_script("return window.localStorage.getItem('KPI')")
-    JSON.parse(raw_kpi)
+  def get_slides
+    structure_file = 'structure_cn1.json' # should be a constant or set externally
+    full_path = @url + '/' + structure_file
+    structure = JSON.parse(File.read(full_path))
+    slides = structure['chapters']['visit']['content'] # TODO: need to get pure flat array
+  end
+
+  def get_standard_kpi
+    raw_kpi = get_kpi
+    standard_kpi = []
+    raw_kpi['slides'].each do |rkpi|
+      standard_kpi << {
+        slide: rkpi['id'],
+        time: rkpi['time'],
+        attitude: %i(negative, positive)[rkpi['likes']]
+    end
   end
 
   private
@@ -46,4 +66,8 @@ class Presentation
     @driver.switch_to.frame current_frame
   end
 
+  def get_kpi
+    raw_kpi = @driver.execute_script("return window.localStorage.getItem('KPI')")
+    JSON.parse(raw_kpi)
+  end
 end
