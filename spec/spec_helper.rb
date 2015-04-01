@@ -4,6 +4,7 @@ require 'selenium-webdriver'
 require 'rspec'
 
 require 'presentation'
+require 'presentation_helper'
 
 driver = Selenium::WebDriver.for :chrome,
                                  :switches => %w[--ignore-certificate-errors
