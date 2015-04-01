@@ -1,8 +1,9 @@
-require 'selenium-webdriver'
-require 'rspec/core'
-require 'rspec/expectations'
+$: << File.dirname(__FILE__) + '/../lib'
 
-require_relative '/../lib/presentation'
+require 'selenium-webdriver'
+require 'rspec'
+
+require 'presentation'
 
 driver = Selenium::WebDriver.for :chrome,
                                  :switches => %w[--ignore-certificate-errors

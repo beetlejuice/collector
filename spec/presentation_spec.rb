@@ -1,15 +1,7 @@
-$url = '<presentation_url>'
+$url = 'http://localhost:8081/'
 
 describe 'Collecting KPI' do
   it 'should collect standard KPI correctly' do
-    # Open presentation url (+ make setup)
-    # Ensure current slide is correct (why do we need this?, this is more about checking engine rather than testing KPIs)
-    # Wait for random amount of time (1-10 second for example)
-    # Go to the next slide
-    # Repeat until the end of presentation
-    # Get KPI
-    # Check for equalness (generate reference string before?)
-
     presentation = Presentation.new(@driver, $url)
 
     slides = presentation.get_slides

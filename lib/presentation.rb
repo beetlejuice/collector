@@ -1,5 +1,4 @@
 class Presentation
-
   require 'json'
 
   attr_accessor :driver, :url
@@ -10,7 +9,8 @@ class Presentation
   end
 
   def start
-    @driver.navigate.to @url
+    url_with_parameter = @url + 'index.html?callNumber=1' # quick test code
+    @driver.navigate.to url_with_parameter 
   end
 
   def turn_slide direction, attitude = nil
@@ -41,7 +41,7 @@ class Presentation
 
   def get_slides
     structure_file = 'structure_cn1.json' # should be a constant or set externally
-    full_path = @url + '/' + structure_file
+    full_path = @url + structure_file
     structure = JSON.parse(File.read(full_path))
     slides = structure['chapters']['visit']['content'] # TODO: need to get pure flat array
   end
@@ -54,6 +54,7 @@ class Presentation
         slide: rkpi['id'],
         time: rkpi['time'],
         attitude: %i(negative, positive)[rkpi['likes']]
+      }
     end
   end
 
