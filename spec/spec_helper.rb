@@ -11,7 +11,7 @@ driver = Selenium::WebDriver.for :chrome,
                                                  --disable-translate
                                                  --test-type]
 
-Rspec.configure do |config|
+RSpec.configure do |config|
   config.include PresentationHelper
   config.before(:each) { @driver = driver }
   config.after(:suite) { driver.quit }

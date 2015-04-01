@@ -1,3 +1,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/.bundle
+Gemfile.lock
+/lib/test.rb
