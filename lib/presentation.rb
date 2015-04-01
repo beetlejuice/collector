@@ -1,5 +1,6 @@
 class Presentation
   require 'json'
+  require 'open-uri'
 
   attr_accessor :driver, :url
 
@@ -42,7 +43,7 @@ class Presentation
   def get_slides
     structure_file = 'structure_cn1.json' # should be a constant or set externally
     full_path = @url + structure_file
-    structure = JSON.parse(File.read(full_path))
+    structure = JSON.parse(open(full_path).read)
     slides = structure['chapters']['visit']['content'] # TODO: need to get pure flat array
   end
 
@@ -56,6 +57,7 @@ class Presentation
         attitude: %i(negative, positive)[rkpi['likes']]
       }
     end
+    standard_kpi
   end
 
   private
