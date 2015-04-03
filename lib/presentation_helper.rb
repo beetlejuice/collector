@@ -6,7 +6,7 @@ module PresentationHelper
       test_data << {
         slide: slide_name,
   		  time: rand(time_interval),
-  		  attitude: %i(negative, positive).sample # attitude is picked randomly here
+  		  attitude: %i(negative positive).sample # attitude is picked randomly here
   	  }
     end
   	test_data

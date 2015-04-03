@@ -54,7 +54,7 @@ class Presentation
       standard_kpi << {
         slide: rkpi['id'],
         time: rkpi['time'],
-        attitude: %i(negative, positive)[rkpi['likes']]
+        attitude: %i(negative positive)[rkpi['likes']]
       }
     end
     standard_kpi
