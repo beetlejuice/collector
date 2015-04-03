@@ -14,7 +14,7 @@ class Presentation
     @driver.navigate.to url_with_parameter 
   end
 
-  def turn_slide direction, attitude = nil
+  def turn_slide direction, attitude
     ensure_is_current_frame
     
     body = @driver.find_element(:tag_name => "body")
@@ -28,9 +28,9 @@ class Presentation
 
     start_y = 
       case attitude
-      when :positive then 3*body.size.height/4
-      when :negative then body.size.height/4
-      else body.size.height/4
+      when :positive then body.size.height/4
+      when :negative then 3*body.size.height/4
+      else raise 'Wrong attitude!'
       end
 
     @driver.action.move_to(body, start_x, start_y).
@@ -41,10 +41,10 @@ class Presentation
   end
 
   def get_slides
-    structure_file = 'structure_cn1.json' # should be a constant or set externally
+    structure_file = 'structure_cn1.json' # should be set externally
     full_path = @url + structure_file
     structure = JSON.parse(open(full_path).read)
-    slides = structure['chapters']['visit']['content'] # TODO: need to get pure flat array
+    slides = structure['chapters']['visit']['content']
   end
 
   def get_standard_kpi
