@@ -28,8 +28,8 @@ class Presentation
 
     start_y = 
       case attitude
-      when :positive then body.size.height/4
-      when :negative then 3*body.size.height/4
+      when :positive then 3*body.size.height/4
+      when :negative then body.size.height/4
       else body.size.height/4
       end
 
