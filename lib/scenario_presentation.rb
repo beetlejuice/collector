@@ -1,2 +1,0 @@
-class ScenarioPresentation < Presentation
-end
