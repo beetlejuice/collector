@@ -40,13 +40,6 @@ class Presentation
                    perform
   end
 
-  def get_slides
-    structure_file = 'structure_cn1.json' # should be set externally
-    full_path = @url + structure_file
-    structure = JSON.parse(open(full_path).read)
-    slides = structure['chapters']['visit']['content']
-  end
-
   def get_standard_kpi
     raw_kpi = get_kpi
     standard_kpi = []
