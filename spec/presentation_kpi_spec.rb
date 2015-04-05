@@ -1,8 +1,6 @@
-$url = 'http://localhost:8081/'
-
-describe 'Collecting KPI' do
+describe 'Collecting KPI', :include_presentation_helper do
   it 'should collect standard KPI correctly' do
-    presentation = Presentation.new(@driver, $url)
+    presentation = Presentation.new(@driver, @url)
 
     slides = presentation.get_slides
     test_data = generate_test_data slides
