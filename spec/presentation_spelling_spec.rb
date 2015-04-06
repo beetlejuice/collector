@@ -1,6 +1,10 @@
 describe 'Checking spelling', :include_presentation_helper, :include_speller do
   it 'should contains correct texts' do
-    texts = get_texts @url
+    texts = presentation_texts @url
+
+    texts.each do |slide_texts|
+    	slide_texts
+    end
 
     text_files = []
     text_files.each do |s_f|
