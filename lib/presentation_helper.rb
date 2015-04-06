@@ -48,21 +48,38 @@ module PresentationHelper
     structure_hash['chapters']['visit']['content']
   end
 
-  def get_i18n_file_pathes slide_name, structure_hash
+  def get_i18n_file_paths slide_name, structure_hash
     slide_path = structure_hash['slides']["#{slide_name}"]['template'].chomp('/index.html')
     Find.find(LOCAL_PATH + slide_path).select { |e| File.file? e }
   end
 
+  def get_all_nested_values hash
+    all_values = []
+    get_nested_values = lambda do |hsh|
+      hsh.each_value do |v|
+        if v.is_a?(String) && !v.empty?
+          all_values << v
+        elsif v.is_a?(Hash)
+          get_nested_values.call v
+        else
+          puts 'Blank string or inappropriate content type'
+        end
+      end
+    end
+    get_nested_values.call hash
+    all_values
+  end
+
   def get_strings text_file_path
     content_json = JSON.parse(File.read text_file_path)
-    content_json.values # need to redesign - doesn't work for nested JSONs
+    get_all_nested_values content_json
   end
 
   def get_slide_texts slide_name, structure_hash
-    i18n_file_pathes = get_i18n_file_pathes slide_name, structure_hash # Collect slide pathes somewhere out of loop
+    i18n_file_paths = get_i18n_file_paths slide_name, structure_hash # Collect slide paths somewhere out of loop
     texts = []
-    i18n_file_pathes.each do |path|
-      texts << get_strings path
+    i18n_file_paths.each do |path|
+      texts << get_strings(path)
     end
     texts
   end
