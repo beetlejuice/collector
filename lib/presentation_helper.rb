@@ -5,15 +5,15 @@ module PresentationHelper
   STRUCTURE_FILE = 'structure_cn1.json' # should be set externally
   LOCAL_PATH = '/Users/admin/Documents/Development/presentations/pharma/' # hardcode
 
-  def presentation_slides url
+  def get_presentation_slides url
     structure = get_structure_json url
     get_slides structure
   end
 
-  def presentation_texts url
+  def get_presentation_texts url
     structure = get_structure_json url
     slides = get_slides structure
-    texts = {} 
+    texts = []
     slides.each do |slide_name|
       slide_texts = get_slide_texts slide_name, structure
       texts << {
@@ -62,7 +62,7 @@ module PresentationHelper
     i18n_file_pathes = get_i18n_file_pathes slide_name, structure_hash # Collect slide pathes somewhere out of loop
     texts = []
     i18n_file_pathes.each do |path|
-      strings << get_strings path
+      texts << get_strings path
     end
     texts
   end

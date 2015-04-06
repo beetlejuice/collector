@@ -15,10 +15,10 @@ module Speller
     req.body = prepare_body texts, check_settings
     res = http.request(req)
 
-    # raise "Bad server response! - #{res.code}" unless res == Net::HTTPSuccess
+    fail "Bad server response! - #{res.code}" unless res.code == '200'
 
     parsed_response = JSON.parse(res.body)
-    # {has_errors: !parsed_response.empty?, response: parsed_response}
+    {has_errors: has_errors?(parsed_response), response: parsed_response}
   end
 
   private
@@ -27,5 +27,9 @@ module Speller
     # Optionally format encoding here
     text_body = 'text=' + texts.join('&text=')
     text_body + '&options=' + settings[:options] + '&format=' + settings[:format]
+  end
+
+  def has_errors? response
+    !response.flatten.empty?
   end
 end

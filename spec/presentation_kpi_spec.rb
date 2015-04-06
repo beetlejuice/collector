@@ -2,7 +2,7 @@ describe 'Collecting KPI', :include_presentation_helper do
   it 'should collect standard KPI correctly' do
     presentation = Presentation.new(@driver, @url)
 
-    slides = presentation_slides @url
+    slides = get_presentation_slides @url
     test_data = generate_test_data slides
 
     presentation.start
