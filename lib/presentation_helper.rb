@@ -3,15 +3,15 @@ module PresentationHelper
   require 'json'
 
   STRUCTURE_FILE = 'structure_cn1.json' # should be set externally
-  LOCAL_PATH = '/Users/admin/Documents/Development/presentations/pharma/' # hardcode
+  GLOBAL_PATH = '/Users/admin/Documents/Development/presentations/pharma/' # hardcode
 
   def get_presentation_slides url
-    structure = get_structure_json url
+    structure = get_structure url
     get_slides structure
   end
 
   def get_presentation_texts url
-    structure = get_structure_json url
+    structure = get_structure url
     slides = get_slides structure
     texts = []
     slides.each do |slide_name|
@@ -39,7 +39,7 @@ module PresentationHelper
 
   private
 
-  def get_structure_json presentation_url
+  def get_structure presentation_url
     full_path = presentation_url + STRUCTURE_FILE
     JSON.parse(open(full_path).read)
   end
@@ -50,7 +50,8 @@ module PresentationHelper
 
   def get_i18n_file_paths slide_name, structure_hash
     slide_path = structure_hash['slides']["#{slide_name}"]['template'].chomp('/index.html')
-    Find.find(LOCAL_PATH + slide_path).select { |e| File.file? e }
+    slide_i18n_path = File.join(GLOBAL_PATH, slide_path, '/i18n/ru/')
+    Find.find(slide_i18n_path).select { |e| File.file? e }
   end
 
   def get_all_nested_values hash
@@ -61,8 +62,8 @@ module PresentationHelper
           all_values << v
         elsif v.is_a?(Hash)
           get_nested_values.call v
-        else
-          puts 'Blank string or inappropriate content type'
+        # else
+          # puts 'Blank string or inappropriate content type'
         end
       end
     end
@@ -71,15 +72,16 @@ module PresentationHelper
   end
 
   def get_strings text_file_path
-    content_json = JSON.parse(File.read text_file_path)
-    get_all_nested_values content_json
+    content_hash = JSON.parse(File.read text_file_path, encoding: 'bom|utf-8')
+    get_all_nested_values content_hash
   end
 
   def get_slide_texts slide_name, structure_hash
-    i18n_file_paths = get_i18n_file_paths slide_name, structure_hash # Collect slide paths somewhere out of loop
+    i18n_file_paths = get_i18n_file_paths slide_name, structure_hash # collect slide paths somewhere out of loop
     texts = []
     i18n_file_paths.each do |path|
-      texts << get_strings(path)
+      strings = get_strings(path)
+      texts << strings unless strings.empty?
     end
     texts
   end
